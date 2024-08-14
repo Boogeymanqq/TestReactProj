@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { sendEmailRequest } from '../../redux/emailLoading/slice'
 import Box from '@mui/material/Box';
 import { Grid, Typography,Button, Link } from '@mui/material';
 import { InputField } from '../UI/Input';
+import { ModalComponent } from '../ModalComponent';
 
 export let MainForm = ({ handleSubmit, reset }) => {
+	const [open, setOpen] = useState(false)
 	const dispatch = useDispatch()
 	const { loading, success, error } = useSelector(
 		state => state.emailLoadingSlice
@@ -15,6 +16,13 @@ export let MainForm = ({ handleSubmit, reset }) => {
 	// const required = value => (value ? undefined : 'This field is required');
 
 	// console.log('required', required)
+
+	const handleOpen = () => {
+    setOpen(true);
+  };
+	const handleClose = () => {
+		setOpen(false);
+	}
 
 	return (
 		<Box sx={{ width: "100%" }} paddingY={5}>
@@ -132,7 +140,13 @@ export let MainForm = ({ handleSubmit, reset }) => {
 							{' '}billing information.
 </Link>
 							 </Typography>
-				<Button type="submit" variant="contained">Save</Button></Box>
+				<Button
+				type='submit'
+				onClick={handleOpen}
+				variant="contained">Save</Button></Box>
+
+		{open && <ModalComponent open={open} handleClose={handleClose}/>}
+
     </form>
 		</Box>
 	)
