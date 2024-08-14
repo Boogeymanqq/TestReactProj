@@ -12,15 +12,19 @@ function App() {
 		console.log('data', values)
 		// dispatch(sendEmailRequest(values))
 	}
-	return <Paper elevation={3}><Container maxWidth="ld">
+	return <Paper elevation={3}
+	>
+		<Container maxWidth="ld"
+	>
 		<Box 
 		borderBottom='1px solid rgba(0, 0, 0, 0.12)'
-		paddingY={4}>
+		paddingY={4}
+		
+		>
 			<Typography 
 								variant='h6'
 								fontWeight='bold'
 								textAlign={'start'}>Change your private information</Typography>
-	
 	<Typography 
 	color='rgb(103, 119, 136)'
 								variant='h6'
