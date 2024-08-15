@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import { Grid, Typography,Button, Link } from '@mui/material';
 import { InputField } from '../UI/Input';
 import { ModalComponent } from '../ModalComponent';
+import {validate} from '../../utils/formValidate'
 
 export let MainForm = ({ handleSubmit, reset }) => {
 	const [open, setOpen] = useState(false)
@@ -12,10 +13,6 @@ export let MainForm = ({ handleSubmit, reset }) => {
 	const { loading, success, error } = useSelector(
 		state => state.emailLoadingSlice
 	)
-
-	// const required = value => (value ? undefined : 'This field is required');
-
-	// console.log('required', required)
 
 	const handleOpen = () => {
     setOpen(true);
@@ -26,7 +23,9 @@ export let MainForm = ({ handleSubmit, reset }) => {
 
 	return (
 		<Box sx={{ width: "100%" }} paddingY={5}>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit}
+			validate={values => {console.log('values', values)}}
+			>
 			<Grid
 			container rowSpacing={1} columnSpacing={{ xs: 0, sm: 2, md: 3 }}
 			>
@@ -40,7 +39,6 @@ export let MainForm = ({ handleSubmit, reset }) => {
 							textAlign={'start'}>Enter your first name</Typography>
 							<Field
 							type="text"
-							error
 							name="firstName"
 							component={InputField}
 							label="First name"
@@ -48,7 +46,6 @@ export let MainForm = ({ handleSubmit, reset }) => {
 							isRequired
 							isFullWidth
 							id="outlined-required"
-							// validate={[required]}
 							/>
 						</Grid>
 						<Grid
@@ -58,7 +55,7 @@ export let MainForm = ({ handleSubmit, reset }) => {
 							<Typography fontWeight={'bold'} paddingY={2} textAlign={'start'}>Enter your email</Typography>
 							<Field
 							type="email"
-							name="lastName"
+							name="Email"
 							component={InputField}
 				      label="Email"
 							helperText="Email is required."
@@ -151,6 +148,8 @@ export let MainForm = ({ handleSubmit, reset }) => {
 		</Box>
 	)
 }
+
 export default reduxForm({
-  form: 'mainForm'
+  form: 'mainForm',
+	validate
 })(MainForm);
