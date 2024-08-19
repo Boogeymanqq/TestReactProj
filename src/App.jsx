@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import MainForm  from './components/mainForm'
 import { Paper, Typography, Container,Link, Box } from '@mui/material';
-import { sendEmailRequest } from './redux/emailLoading/slice'
+import { sendEmailRequest, setEmailObj } from './redux/emailSlice/slice'
 import './App.css'
 
 
@@ -9,8 +9,7 @@ function App() {
 	const dispatch = useDispatch()
 
 	const handleFormSubmit = (values) => {
-		console.log('data', values)
-		// dispatch(sendEmailRequest(values))
+		dispatch(setEmailObj(values))
 	}
 	return <Paper elevation={3}
 	>
