@@ -1,20 +1,16 @@
-import { Grid, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import React from 'react'
 
-export const InputField = ({input, multiline, rows, xs,isRequired = false, isFullWidth = false, helperText, m = 0, id, label, meta: {dirty, touched, error
-}}) => {
-  // console.log('meta', dirty, touched)
-  // meta: {touched, error}
-  // console.log('error', meta)
+export const InputField = ({input, multiline, rows,isRequired = false, isFullWidth = false, helperText, id, label, meta: { touched, error}}) => {
   return (
 						<TextField
             {...input}
-            error={touched && !dirty && isRequired}
+            error={touched && error && isRequired}
 						    required={isRequired}
 						    fullWidth={isFullWidth}
 			          id={id}
 			          label={label}
-                helperText={touched && !dirty && helperText}
+                helperText={touched && error && (error || helperText)}
                 rows={rows}
                 multiline={multiline}
 			        />

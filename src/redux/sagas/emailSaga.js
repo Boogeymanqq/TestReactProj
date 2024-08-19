@@ -3,23 +3,23 @@ import {
 	sendEmailRequest,
 	sendEmailSuccess,
 	sendEmailFailure,
-} from '../emailLoading/slice'
+	setSuccessMessage,
+} from '../emailSlice/slice'
 import emailjs from '@emailjs/browser'
 
 // Функция для отправки email с использованием emailjs
 function sendEmail(data) {
-	const form = {...data,to_email: 'boogeymanqq@gmail.com' }
 
 	emailjs
-      .send(import.meta.env.VITE_APP_SERVICE_ID, import.meta.env.VITE_APP_TEMPLATE_ID, form, {
+      .send(import.meta.env.VITE_APP_SERVICE_ID, import.meta.env.VITE_APP_TEMPLATE_ID, data, {
         publicKey: import.meta.env.VITE_APP_PUBLIC_KEY,
       })
       .then(
         () => {
-          console.log('SUCCESS!');
+          console.log('Success!');
         },
         (error) => {
-          console.log('FAILED...', error);
+          console.log('Failed...', error);
         },
       );
 }
@@ -28,6 +28,8 @@ function* sendEmailSaga(action) {
 	try {
 		const response = yield call(sendEmail, action.payload)
 		yield put(sendEmailSuccess(response))
+
+		yield put(setSuccessMessage('Your message is send!'))
 	} catch (error) {
 		yield put(sendEmailFailure(error.toString()))
 	}

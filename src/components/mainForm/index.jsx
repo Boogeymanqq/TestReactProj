@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
 import Box from '@mui/material/Box';
-import { Grid, Typography,Button, Link } from '@mui/material';
+import { Grid, Typography,Button, Link, Alert } from '@mui/material';
 import { InputField } from '../UI/Input';
 import { ModalComponent } from '../ModalComponent';
-import {validate} from '../../utils/formValidate'
+import {maxLengthCreator, minLength, required, validateEmail} from '../../utils/formValidate'
+import { setSuccessMessage } from '../../redux/emailSlice/slice';
 
-export let MainForm = ({ handleSubmit, reset }) => {
+export let MainForm = ({ handleSubmit, reset, ...props }) => {
 	const [open, setOpen] = useState(false)
 	const dispatch = useDispatch()
 	const { loading, success, error } = useSelector(
-		state => state.emailLoadingSlice
+		state => state.emailSlice
 	)
 
 	const handleOpen = () => {
@@ -21,10 +22,20 @@ export let MainForm = ({ handleSubmit, reset }) => {
 		setOpen(false);
 	}
 
+	useEffect(() => {
+		if(success) {
+			setTimeout(() => {
+				reset()
+				setOpen(false);
+				dispatch(setSuccessMessage(''))
+			}, 2000)
+		}
+	}, [success])
+
+	const maxLength = useMemo(() => maxLengthCreator(40), [])
 	return (
 		<Box sx={{ width: "100%" }} paddingY={5}>
 			<form onSubmit={handleSubmit}
-			validate={values => {console.log('values', values)}}
 			>
 			<Grid
 			container rowSpacing={1} columnSpacing={{ xs: 0, sm: 2, md: 3 }}
@@ -38,6 +49,7 @@ export let MainForm = ({ handleSubmit, reset }) => {
 							paddingY={2}
 							textAlign={'start'}>Enter your first name</Typography>
 							<Field
+							validate={[required, maxLength, minLength]}
 							type="text"
 							name="firstName"
 							component={InputField}
@@ -54,6 +66,7 @@ export let MainForm = ({ handleSubmit, reset }) => {
 						>
 							<Typography fontWeight={'bold'} paddingY={2} textAlign={'start'}>Enter your email</Typography>
 							<Field
+							validate={[required, validateEmail, maxLength, minLength]}
 							type="email"
 							name="Email"
 							component={InputField}
@@ -82,6 +95,7 @@ export let MainForm = ({ handleSubmit, reset }) => {
 						<Grid item xs={12} sm={6}>
 						<Typography fontWeight={'bold'} paddingY={2} textAlign={'start'}>Country</Typography>
 						<Field
+						validate={[required, maxLength, minLength]}
 						type="text"
 						name="Country"
 							component={InputField}
@@ -96,6 +110,7 @@ export let MainForm = ({ handleSubmit, reset }) => {
 						<Grid item xs={12} sm={6}>
 						<Typography fontWeight={'bold'} paddingY={2} textAlign={'start'}>City</Typography>
 						<Field
+						validate={[required, maxLength, minLength]}
 						type="text"
 						name="City"
 							component={InputField}
@@ -110,6 +125,7 @@ export let MainForm = ({ handleSubmit, reset }) => {
 					<Grid item xs={12}>
 					<Typography fontWeight={'bold'} paddingY={2} textAlign={'start'}>Enter your address</Typography>
 					<Field
+					validate={[required, maxLength, minLength]}
 					type="text"
 						name="Address"
 							component={InputField}
@@ -138,8 +154,9 @@ export let MainForm = ({ handleSubmit, reset }) => {
 </Link>
 							 </Typography>
 				<Button
+				disabled={props.invalid || loading}
 				type='submit'
-				onClick={handleOpen}
+				onClick={props.invalid ? undefined : handleOpen}
 				variant="contained">Save</Button></Box>
 
 		{open && <ModalComponent open={open} handleClose={handleClose}/>}
@@ -151,5 +168,4 @@ export let MainForm = ({ handleSubmit, reset }) => {
 
 export default reduxForm({
   form: 'mainForm',
-	validate
 })(MainForm);

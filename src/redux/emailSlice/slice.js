@@ -4,10 +4,12 @@ const initialState = {
 	success: false,
 	loading: false,
 	error: null,
+	emailObj: {},
+	successMessage: ''
 }
 
-export const emailLoadingSlice = createSlice({
-	name: 'emailLoadingSlice',
+export const emailSlice = createSlice({
+	name: 'emailSlice',
 	initialState,
 	reducers: {
 		sendEmailRequest: state => {
@@ -23,9 +25,15 @@ export const emailLoadingSlice = createSlice({
 			state.loading = false
 			state.error = action.payload
 		},
+		setEmailObj: (state, action) => {
+			state.emailObj = action.payload
+		},
+		setSuccessMessage: (state, action) => {
+			state.successMessage = action.payload
+		}
 	},
 })
 
-export const { sendEmailRequest, sendEmailSuccess, sendEmailFailure } =
-	emailLoadingSlice.actions
-export default emailLoadingSlice.reducer
+export const { sendEmailRequest, sendEmailSuccess, sendEmailFailure, setEmailObj, setSuccessMessage } =
+emailSlice.actions
+export default emailSlice.reducer
