@@ -1,8 +1,7 @@
+export const required = (value) => {
+  if (value) return undefined;
 
-export const required = (value, values) => {
-  if (value) return undefined
-
-  return 'Field is required!'
+  return 'Field is required!';
 };
 
 // Проверка на валидный email
@@ -13,16 +12,14 @@ export const validateEmail = (value) => {
   return undefined;
 };
 
-
-
 export const maxLengthCreator = (maxLength) => (value) => {
-  if (value && value.length > maxLength) return `Max length ${{maxLength}} symbols!`
+  if (value && value.length > maxLength) return `Max length ${{ maxLength }} symbols!`;
 
-  return undefined
+  return undefined;
 };
 
 export const minLength = (value) => {
-  if (value && value.length < 2) return 'Min length 2 symbols!'
+  if (value && value.length < 2) return 'Min length 2 symbols!';
 
-  return undefined
-}
+  return undefined;
+};
